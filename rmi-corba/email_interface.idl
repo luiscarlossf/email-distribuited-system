@@ -1,0 +1,18 @@
+module EmailServer{
+    struct Email{
+        long id;
+        string sender;
+        string recipient;
+        string subject;
+        string body;
+    };
+
+    typedef sequence <Email> Inbox;
+
+    interface EmailInterface {
+        void send(in Email);
+        void delelte(in Email);
+        Inbox list();        
+    };
+};
+
