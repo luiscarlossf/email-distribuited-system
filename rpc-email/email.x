@@ -1,3 +1,4 @@
+
 struct temail{
   long id; 
   char sender[100];
