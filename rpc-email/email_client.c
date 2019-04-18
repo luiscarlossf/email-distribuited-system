@@ -59,7 +59,8 @@ int ask(char function[]){
 
 //Elimina o \n da string
 void eliminate_enter(char * str){
-	str[strlen(str)] = '\0';
+	int len = strlen(str);
+	if (str[len - 1] == '\n') str[--len] = 0;
 }
 
 void send_message(CLIENT * clnt, char sender[]){
@@ -74,14 +75,13 @@ void send_message(CLIENT * clnt, char sender[]){
     printf("============ EMAIL =================\n");
 	//Um email é identificado pela a hora que foi enviado e remetente(sender).
 	strcpy(email.sender, sender);
-    setbuf(stdin, NULL);
     printf("Destinatário: ");
     fgets(email.recipient, MAX_SR, stdin);
 	eliminate_enter(email.recipient);
     printf("Assunto: ");
     fgets(email.subject, MAX_SR, stdin);
-	eliminate_enter(email.subject);
     printf("Corpo da Mensagem:\n");
+	eliminate_enter(email.subject);
     fgets(email.body, MAX_B, stdin);
 	eliminate_enter(email.body);
 	time(&timer);

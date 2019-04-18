@@ -5,6 +5,13 @@
  */
 
 #include "email.h"
+void show(char * str){
+	int i;
+	printf("Eliminate_enter: %s\n", str);
+	for(i=0; i< strlen(str); i++){
+		printf("%d - %c\n", i, str[i]);
+	}
+}
 
 void *
 send_1_svc(temail *email, struct svc_req *rqstp)
@@ -26,6 +33,7 @@ send_1_svc(temail *email, struct svc_req *rqstp)
         fputs(email->subject, arq);
 		fputs("\n", arq);
         fputs(email->body, arq);
+		fputs("\n", arq);
     }
     fclose(arq);
 
