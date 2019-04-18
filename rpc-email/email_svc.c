@@ -21,6 +21,7 @@ prog_1(struct svc_req *rqstp, register SVCXPRT *transp)
 {
 	union {
 		temail send_1_arg;
+		client_name list_1_arg;
 		temail delete_1_arg;
 	} argument;
 	char *result;
@@ -39,7 +40,7 @@ prog_1(struct svc_req *rqstp, register SVCXPRT *transp)
 		break;
 
 	case LIST:
-		_xdr_argument = (xdrproc_t) xdr_void;
+		_xdr_argument = (xdrproc_t) xdr_client_name;
 		_xdr_result = (xdrproc_t) xdr_tinbox;
 		local = (char *(*)(char *, struct svc_req *)) list_1_svc;
 		break;

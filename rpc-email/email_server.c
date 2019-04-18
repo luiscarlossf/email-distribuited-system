@@ -19,7 +19,7 @@ send_1_svc(temail *argp, struct svc_req *rqstp)
 }
 
 tinbox *
-list_1_svc(void *argp, struct svc_req *rqstp)
+list_1_svc(client_name *argp, struct svc_req *rqstp)
 {
 	static tinbox  result;
 

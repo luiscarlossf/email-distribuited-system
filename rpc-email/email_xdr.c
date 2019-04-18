@@ -13,16 +13,28 @@ xdr_temail (XDR *xdrs, temail *objp)
 	int i;
 	 if (!xdr_long (xdrs, &objp->id))
 		 return FALSE;
-	 if (!xdr_vector (xdrs, (char *)objp->sender, 100,
+	 if (!xdr_vector (xdrs, (char *)objp->sender, MAX_SR,
 		sizeof (char), (xdrproc_t) xdr_char))
 		 return FALSE;
-	 if (!xdr_vector (xdrs, (char *)objp->recipient, 100,
+	 if (!xdr_vector (xdrs, (char *)objp->recipient, MAX_SR,
 		sizeof (char), (xdrproc_t) xdr_char))
 		 return FALSE;
-	 if (!xdr_vector (xdrs, (char *)objp->subject, 100,
+	 if (!xdr_vector (xdrs, (char *)objp->subject, MAX_SR,
 		sizeof (char), (xdrproc_t) xdr_char))
 		 return FALSE;
-	 if (!xdr_vector (xdrs, (char *)objp->body, 240,
+	 if (!xdr_vector (xdrs, (char *)objp->body, MAX_B,
+		sizeof (char), (xdrproc_t) xdr_char))
+		 return FALSE;
+	return TRUE;
+}
+
+bool_t
+xdr_client_name (XDR *xdrs, client_name *objp)
+{
+	register int32_t *buf;
+
+	int i;
+	 if (!xdr_vector (xdrs, (char *)objp->name, MAX_SR,
 		sizeof (char), (xdrproc_t) xdr_char))
 		 return FALSE;
 	return TRUE;
@@ -34,7 +46,7 @@ xdr_tinbox (XDR *xdrs, tinbox *objp)
 	register int32_t *buf;
 
 	int i;
-	 if (!xdr_vector (xdrs, (char *)objp->emails, 100,
+	 if (!xdr_vector (xdrs, (char *)objp->emails, MAX_SR,
 		sizeof (temail), (xdrproc_t) xdr_temail))
 		 return FALSE;
 	 if (!xdr_int (xdrs, &objp->cont))

@@ -14,7 +14,7 @@ prog_1(char *host)
 	void  *result_1;
 	temail  send_1_arg;
 	tinbox  *result_2;
-	char *list_1_arg;
+	client_name  list_1_arg;
 	void  *result_3;
 	temail  delete_1_arg;
 
@@ -30,7 +30,7 @@ prog_1(char *host)
 	if (result_1 == (void *) NULL) {
 		clnt_perror (clnt, "call failed");
 	}
-	result_2 = list_1((void*)&list_1_arg, clnt);
+	result_2 = list_1(&list_1_arg, clnt);
 	if (result_2 == (tinbox *) NULL) {
 		clnt_perror (clnt, "call failed");
 	}

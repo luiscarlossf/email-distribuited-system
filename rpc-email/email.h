@@ -13,18 +13,25 @@
 extern "C" {
 #endif
 
+#define MAX_SR 100
+#define MAX_B 240
 
 struct temail {
 	long id;
-	char sender[100];
-	char recipient[100];
-	char subject[100];
-	char body[240];
+	char sender[MAX_SR];
+	char recipient[MAX_SR];
+	char subject[MAX_SR];
+	char body[MAX_B];
 };
 typedef struct temail temail;
 
+struct client_name {
+	char name[MAX_SR];
+};
+typedef struct client_name client_name;
+
 struct tinbox {
-	struct temail emails[100];
+	struct temail emails[MAX_SR];
 	int cont;
 };
 typedef struct tinbox tinbox;
@@ -37,8 +44,8 @@ typedef struct tinbox tinbox;
 extern  void * send_1(temail *, CLIENT *);
 extern  void * send_1_svc(temail *, struct svc_req *);
 #define LIST 2
-extern  tinbox * list_1(void *, CLIENT *);
-extern  tinbox * list_1_svc(void *, struct svc_req *);
+extern  tinbox * list_1(client_name *, CLIENT *);
+extern  tinbox * list_1_svc(client_name *, struct svc_req *);
 #define DELETE 3
 extern  void * delete_1(temail *, CLIENT *);
 extern  void * delete_1_svc(temail *, struct svc_req *);
@@ -61,10 +68,12 @@ extern int prog_1_freeresult ();
 
 #if defined(__STDC__) || defined(__cplusplus)
 extern  bool_t xdr_temail (XDR *, temail*);
+extern  bool_t xdr_client_name (XDR *, client_name*);
 extern  bool_t xdr_tinbox (XDR *, tinbox*);
 
 #else /* K&R C */
 extern bool_t xdr_temail ();
+extern bool_t xdr_client_name ();
 extern bool_t xdr_tinbox ();
 
 #endif /* K&R C */
