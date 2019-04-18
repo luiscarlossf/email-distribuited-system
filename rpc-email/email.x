@@ -3,7 +3,7 @@ const MAX_SR = 100;
 const MAX_B = 240;
 
 struct temail{
-  long id; 
+  double id; 
   char sender[MAX_SR];
   char recipient[MAX_SR];
   char subject[MAX_SR];

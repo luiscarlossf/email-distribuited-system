@@ -11,7 +11,7 @@ xdr_temail (XDR *xdrs, temail *objp)
 	register int32_t *buf;
 
 	int i;
-	 if (!xdr_long (xdrs, &objp->id))
+	 if (!xdr_double (xdrs, &objp->id))
 		 return FALSE;
 	 if (!xdr_vector (xdrs, (char *)objp->sender, MAX_SR,
 		sizeof (char), (xdrproc_t) xdr_char))
