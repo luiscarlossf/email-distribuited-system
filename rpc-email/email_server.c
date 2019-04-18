@@ -53,7 +53,6 @@ list_1_svc(client_name * user, struct svc_req *rqstp)
 	//printf("================ Chekcpoint 4 ==============\n");
     strcpy(filename, user->name);
     arq = fopen(strcat(filename, ".txt"), "w+");
-    printf("================ Chekcpoint 4 ==============\n");
     if(arq == NULL){
         printf("ERRO! Arquivo não pode ser aberto.");
     }else{
@@ -89,6 +88,7 @@ delete_1_svc(temail *email, struct svc_req *rqstp)
 	char filename_temp[103];
     char sender[MAX_SR];
     int cont =0, i;
+	printf("Deletando o e-mail %lf enviado de %s para %s ",email->id, email->sender, email->recipient);
 	strcpy(filename, email->recipient);
 	strcpy(filename_temp, email->recipient);
     arq = fopen(strcat(filename, ".txt"), "w+");
