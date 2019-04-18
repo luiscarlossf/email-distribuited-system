@@ -5,7 +5,7 @@
  */
 
 #include "email.h"
-
+#include <time.h>
 
 void
 prog_1(char *host)
@@ -50,6 +50,47 @@ void show_options(int * resp){
     setbuf(stdin, NULL);
 }
 
+int ask(char function[]){
+	int resp;
+	printf("Deseja realmente %s o email? 1 - Sim , <outro> - Cancelar", function);
+    scanf("%d", &resp);
+	return resp;
+}
+
+//Elimina o \n da string
+void eliminate_enter(char * str){
+	str[strlen(str)] = '\0';
+}
+
+void send_message(CLIENT * clnt, char sender[]){
+    temail email;
+    int resp;
+	time_t timer;
+	struct tm y2k = {0};
+
+    y2k.tm_hour = 0;   y2k.tm_min = 0; y2k.tm_sec = 0;
+    y2k.tm_year = 119; y2k.tm_mon = 3; y2k.tm_mday = 17;
+
+    printf("============ EMAIL =================\n");
+	//Um email é identificado pela a hora que foi enviado e remetente(sender).
+	strcpy(email.sender, sender);
+    setbuf(stdin, NULL);
+    printf("Destinatário: ");
+    fgets(email.recipient, MAX_SR, stdin);
+	eliminate_enter(email.recipient);
+    printf("Assunto: ");
+    fgets(email.subject, MAX_SR, stdin);
+	eliminate_enter(email.subject);
+    printf("Corpo da Mensagem:\n");
+    fgets(email.body, MAX_B, stdin);
+	eliminate_enter(email.body);
+	time(&timer);
+	email.id = difftime(timer, mktime(&y2k)); //Segundos contados desde 17 de abril de 2019
+    if (ask("enviar")== 1){
+        send_1(&email, clnt);
+    }
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -70,7 +111,7 @@ main (int argc, char *argv[])
     {
     case 1:
 	    //Passa o nome inserido no terminal como segundo parâmetro de send_message()
-        send_message(clnt, strcat(argv[2], "\n")); 
+        send_message(clnt, argv[2]); 
         break;
 	case 2:
 	    //list_message(clnt, strcat(argv[2], "\n"));

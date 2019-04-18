@@ -20,10 +20,11 @@ send_1_svc(temail *email, struct svc_req *rqstp)
     if(arq == NULL){
         printf("ERRO! Arquivo não pode ser aberto.");
     }else{
-		//Um email é identificado pela a hora que foi enviado e remetente.
-		fprintf(arq, "%lf %s", email->id, email->sender);
+		fprintf(arq, "%lf %s\n", email->id, email->sender);
         fputs(email->sender, arq);
+		fputs("\n", arq);
         fputs(email->subject, arq);
+		fputs("\n", arq);
         fputs(email->body, arq);
     }
     fclose(arq);
