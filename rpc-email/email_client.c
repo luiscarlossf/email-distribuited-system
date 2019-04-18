@@ -91,6 +91,42 @@ void send_message(CLIENT * clnt, char sender[]){
     }
 }
 
+void delete_message(CLIENT * clnt, temail email){
+	if (ask("apagar") == 1){
+		delete_1(&email, clnt);
+	}
+}
+
+void open_message(CLIENT * clnt, temail email){
+	int resp;
+	printf("============ EMAIL =================\n");
+    setbuf(stdin, NULL);
+    printf("Rementente: ");
+    printf("%s\n", email.sender);
+    printf("Assunto: ");
+    printf("%s\n", email.subject);
+    printf("Corpo da Mensagem:\n");
+    printf("%s\n", email.body);
+	printf("-------------------------------\n");
+	printf("1-APAGAR / 2-ENCAMINHAR / 3-RESPONDER / <outro> - VOLTAR\n");
+	scanf("%d", &resp);
+	switch (resp)
+	{
+	case 1:
+		delete_message(clnt, email);
+		break;
+	case 2:
+		//forward_message(clnt, email);
+		break;
+	case 3:
+		//reply_message(clnt, email);
+		break;
+	default:
+		break;
+	}
+
+}
+
 void list_message(CLIENT * clnt, char user[]){
 	tinbox * e = NULL;
 	int i, resp, flag = 1, exit = 0;//flag controla a exibição dos e-mails nos casos que atinge o limites
@@ -130,7 +166,7 @@ void list_message(CLIENT * clnt, char user[]){
 				}
 				break;
 			case 2:
-				//open_message(clnt, e->emails[i]);
+				open_message(clnt, e->emails[i]);
 				break;
 			default:
 			    exit = 1;
