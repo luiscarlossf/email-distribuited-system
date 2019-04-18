@@ -91,6 +91,59 @@ void send_message(CLIENT * clnt, char sender[]){
     }
 }
 
+void list_message(CLIENT * clnt, char user[]){
+	tinbox * e = NULL;
+	int i, resp, flag = 1, exit = 0;//flag controla a exibição dos e-mails nos casos que atinge o limites
+	client_name name_u;
+	strcpy(name_u.name, user);
+	e = list_1(&name_u, clnt);
+
+	if(e != NULL){
+		printf("================ CAIXA DE ENTRADA ==============\n");
+		for(i = 0; i < e->cont;){
+			if(flag){
+				printf("-------------------------------\n");
+				printf("Remetente: %s", e->emails[i].sender);
+				printf("Assunto: %s", e->emails[i].subject);
+				printf("-------------------------------\n");
+				printf("0-ANTERIOR/ 1-PRÓXIMO/ 2-ABRIR / <outro> - SAIR\n");
+			}
+			scanf("%d", &resp);
+			switch (resp)
+			{
+			case 0:
+				if(i == 0){
+					printf("Não há mais emails anteriores!\n");
+					flag = 0;
+				}else{
+					i--;
+					flag = 1;
+				}
+				break;
+			case 1:
+				if(i+1 == e->cont){
+					printf("Não há mais emails!\n");
+					flag = 0;
+				}else{
+					i++;
+					flag = 1;
+				}
+				break;
+			case 2:
+				//open_message(clnt, e->emails[i]);
+				break;
+			default:
+			    exit = 1;
+				break;
+			}
+			if(exit)
+			    break;
+		}
+	}else{
+		printf("Problemas no servidor de e-mail!\n");
+	}
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -114,7 +167,7 @@ main (int argc, char *argv[])
         send_message(clnt, argv[2]); 
         break;
 	case 2:
-	    //list_message(clnt, strcat(argv[2], "\n"));
+	    list_message(clnt, argv[2]);
 		break;
     default:
         break;

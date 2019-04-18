@@ -41,10 +41,39 @@ send_1_svc(temail *email, struct svc_req *rqstp)
 }
 
 tinbox *
-list_1_svc(client_name *argp, struct svc_req *rqstp)
+list_1_svc(client_name * user, struct svc_req *rqstp)
 {
 	static tinbox  result;
-
+	printf("Hi");
+	FILE * arq;
+    temail email;
+	int cont = 0;
+    char aux[6];
+    char name_file[103];
+    printf("Listando os e-mails de %s!\n", user->name);
+	printf("================ Chekcpoint 4 ==============\n");
+    strcpy(name_file, user->name);
+	printf("================ Chekcpoint 5 ==============\n");
+    arq = fopen(strcat(name_file, ".txt"), "r+");
+    if(arq == NULL){
+        printf("ERRO! Arquivo não pode ser aberto.");
+    }else{
+		printf("================ Chekcpoint 6 ==============\n");
+        while(fscanf(arq,"%lf", &(email.id))>0){
+			printf("================ Chekcpoint 7 ==============\n");
+			fgets(email.sender, MAX_SR, arq);
+			strcpy(email.recipient, user->name);
+			fgets(email.sender, MAX_SR, arq);
+			fgets(email.subject, MAX_SR, arq);
+			fgets(email.body, MAX_B, arq);
+			result.emails[cont] = email;
+			cont++;
+			
+	    }
+		result.cont = cont;
+    }
+    fclose(arq);
+    printf("Foram encontrados %d emails!\n", result.cont);
 	return &result;
 }
 
