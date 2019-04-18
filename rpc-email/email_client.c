@@ -43,17 +43,40 @@ prog_1(char *host)
 #endif	 /* DEBUG */
 }
 
+void show_options(int * resp){
+    printf("O que deseja fazer?\n");
+    printf("1-Enviar\n2-Listar\n");
+    scanf("%d", resp);
+    setbuf(stdin, NULL);
+}
 
 int
 main (int argc, char *argv[])
 {
-	char *host;
+	CLIENT *clnt;
 
-	if (argc < 2) {
-		printf ("usage: %s server_host\n", argv[0]);
-		exit (1);
+	if (argc!=3) {
+		fprintf(stderr,"Uso: %s hostname nome",argv[0]);
+		exit(0); 
 	}
-	host = argv[1];
-	prog_1 (host);
-exit (0);
+	clnt = clnt_create(argv[1], PROG, VERSAO, "tcp"); 
+	if (clnt == (CLIENT *) NULL) {
+		clnt_pcreateerror(argv[1]);
+		exit(1); 
+	}
+    int resp;
+    show_options(&resp);
+    switch (resp)
+    {
+    case 1:
+	    //Passa o nome inserido no terminal como segundo parâmetro de send_message()
+        send_message(clnt, strcat(argv[2], "\n")); 
+        break;
+	case 2:
+	    //list_message(clnt, strcat(argv[2], "\n"));
+		break;
+    default:
+        break;
+    }
+	exit(0);
 }
