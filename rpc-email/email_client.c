@@ -110,6 +110,23 @@ void forward_message(CLIENT * clnt, temail email){
 
 }
 
+void reply_message(CLIENT * clnt, temail email){
+	temail answer;
+	printf("============ RESPONDER EMAIL =================\n");
+	printf("Rementente: ");
+    printf("%s\n", email.sender);
+    printf("Assunto: ");
+    printf("%s\n", email.subject);
+    printf("Corpo da Mensagem:\n");
+    printf("%s\n", email.body);
+	printf("Escreva a resposta: \n");
+	strcpy(answer.sender, email.recipient);
+	strcpy(answer.recipient, email.sender);
+	strcpy(answer.subject, email.subject);
+	fgets(answer.body, MAX_SR, stdin);
+	send_1(&answer, clnt);
+}
+
 void open_message(CLIENT * clnt, temail email){
 	int resp;
 	printf("============ EMAIL =================\n");
@@ -132,7 +149,7 @@ void open_message(CLIENT * clnt, temail email){
 		forward_message(clnt, email);
 		break;
 	case 3:
-		//reply_message(clnt, email);
+		reply_message(clnt, email);
 		break;
 	default:
 		break;
