@@ -7,13 +7,26 @@
 #include "email.h"
 
 void *
-send_1_svc(temail *argp, struct svc_req *rqstp)
+send_1_svc(temail *email, struct svc_req *rqstp)
 {
 	static char * result;
 
-	/*
-	 * insert server code here
-	 */
+	FILE * arq;
+    char name_file[103];
+	time_t timer;
+    printf("Enviando email de %s para %s\n", email->sender, email->recipient);
+    strcpy(name_file, email->recipient);
+    arq = fopen(strcat(name_file, ".txt"), "a"); //Abre arquivo nomeado como name_file.txt(inclui '\n')
+    if(arq == NULL){
+        printf("ERRO! Arquivo não pode ser aberto.");
+    }else{
+		//Um email é identificado pela a hora que foi enviado e remetente.
+		fprintf(arq, "%lf %s", email->id, email->sender);
+        fputs(email->sender, arq);
+        fputs(email->subject, arq);
+        fputs(email->body, arq);
+    }
+    fclose(arq);
 
 	return (void *) &result;
 }
@@ -22,10 +35,6 @@ tinbox *
 list_1_svc(client_name *argp, struct svc_req *rqstp)
 {
 	static tinbox  result;
-
-	/*
-	 * insert server code here
-	 */
 
 	return &result;
 }
