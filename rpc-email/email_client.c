@@ -97,6 +97,19 @@ void delete_message(CLIENT * clnt, temail email){
 	}
 }
 
+void forward_message(CLIENT * clnt, temail email){
+	printf("============ ENCAMINHAR EMAIL =================\n");
+	strcpy(email.sender, email.recipient);
+	printf("Destinatário: ");
+    fgets(email.recipient, MAX_SR, stdin);
+	printf("----Assunto: ");
+    printf("----%s\n", email.subject);
+    printf("----Corpo da Mensagem:\n");
+    printf("----%s\n", email.body);
+	send_1(&email, clnt);
+
+}
+
 void open_message(CLIENT * clnt, temail email){
 	int resp;
 	printf("============ EMAIL =================\n");
@@ -116,7 +129,7 @@ void open_message(CLIENT * clnt, temail email){
 		delete_message(clnt, email);
 		break;
 	case 2:
-		//forward_message(clnt, email);
+		forward_message(clnt, email);
 		break;
 	case 3:
 		//reply_message(clnt, email);
@@ -136,7 +149,10 @@ void list_message(CLIENT * clnt, char user[]){
 
 	if(e != NULL){
 		printf("================ CAIXA DE ENTRADA ==============\n");
-		for(i = 0; i < e->cont;){
+		if(e->cont == 0){
+			printf("Vazia! Nenhum e-mail recebido.\n");
+		}else{
+			for(i = 0; i < e->cont;){
 			if(flag){
 				printf("-------------------------------\n");
 				printf("Remetente: %s", e->emails[i].sender);
@@ -174,7 +190,10 @@ void list_message(CLIENT * clnt, char user[]){
 			}
 			if(exit)
 			    break;
+	        }
+
 		}
+		
 	}else{
 		printf("Problemas no servidor de e-mail!\n");
 	}

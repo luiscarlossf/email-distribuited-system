@@ -23,7 +23,7 @@ send_1_svc(temail *email, struct svc_req *rqstp)
 	time_t timer;
     printf("Enviando email de %s para %s\n", email->sender, email->recipient);
     strcpy(filename, email->recipient);
-    arq = fopen(strcat(filename, ".txt"), "a"); //Abre arquivo nomeado como name_file.txt(inclui '\n')
+    arq = fopen(strcat(filename, ".txt"), "a+"); //Abre arquivo nomeado como name_file.txt(inclui '\n')
     if(arq == NULL){
         printf("ERRO! Arquivo não pode ser aberto.");
     }else{
@@ -44,7 +44,6 @@ tinbox *
 list_1_svc(client_name * user, struct svc_req *rqstp)
 {
 	static tinbox  result;
-	printf("Hi");
 	FILE * arq;
     temail email;
 	int cont = 0;
@@ -53,7 +52,8 @@ list_1_svc(client_name * user, struct svc_req *rqstp)
     printf("Listando os e-mails de %s!\n", user->name);
 	//printf("================ Chekcpoint 4 ==============\n");
     strcpy(filename, user->name);
-    arq = fopen(strcat(filename, ".txt"), "r+");
+    arq = fopen(strcat(filename, ".txt"), "w+");
+    printf("================ Chekcpoint 4 ==============\n");
     if(arq == NULL){
         printf("ERRO! Arquivo não pode ser aberto.");
     }else{
@@ -91,7 +91,7 @@ delete_1_svc(temail *email, struct svc_req *rqstp)
     int cont =0, i;
 	strcpy(filename, email->recipient);
 	strcpy(filename_temp, email->recipient);
-    arq = fopen(strcat(filename, ".txt"), "r+");
+    arq = fopen(strcat(filename, ".txt"), "w+");
     arq2 = fopen(strcat(filename_temp, "_temp.txt"), "w+");
 	
     if((arq == NULL) && (arq2 == NULL)){
