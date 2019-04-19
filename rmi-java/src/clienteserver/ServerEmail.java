@@ -63,15 +63,15 @@ public class ServerEmail extends UnicastRemoteObject implements ServerEmailInter
 	@Override
 	public ArrayList<Email> list(String username) throws RemoteException {
 		Email email;
-		File directory = new File("./"+username);
+		File directory = new File("./" + username);
 		ArrayList<Email> emails= new ArrayList<Email>();
         
 		if(!directory.exists()){
 			boolean statusdir = directory.mkdir();
 			if (statusdir){
-				System.out.println("O diretório foi criado para "+ email.getRecipient());
+				System.out.println("O diretório foi criado para " + username);
 			}else{
-				System.out.println("Erro! O diretório não foi criado para "+ email.getRecipient());
+				System.out.println("Erro! O diretório não foi criado para "+ username);
 			}
 		}
         try{
@@ -95,7 +95,6 @@ public class ServerEmail extends UnicastRemoteObject implements ServerEmailInter
 					email.setBody(linha);
 				
 				emails.add(email);
-				
 				fileReader.close();
 			    bufferedReader.close();
 			}
@@ -107,8 +106,18 @@ public class ServerEmail extends UnicastRemoteObject implements ServerEmailInter
 
 	@Override
 	public void delete(Email email) throws RemoteException {
-		
-		
+		File directory = new File("./" + email.getRecipient());
+		double idEmail = email.getId();
+		if(directory.exists()){
+			File file = new File(directory, email.getId()+".txt");
+			if(file.delete()){
+				System.out.println("O email "+ idEmail + " foi apagado.");
+			}else{
+				System.out.println("Erro! O email não pode ser apagado.");
+			}
+		}else{
+			System.out.println("Não existem emails para "+ email.getRecipient());
+		}
 	}
 	
 
