@@ -7,16 +7,16 @@ public class Email implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private long id;
+	private double id;
 	private String sender;
 	private String recipient;
 	private String subject;
 	private String body;
 	
-	public long getId() {
+	public double getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(double id) {
 		this.id = id;
 	}
 	public String getSender() {
