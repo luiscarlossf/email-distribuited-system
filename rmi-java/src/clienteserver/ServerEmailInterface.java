@@ -1,8 +1,8 @@
 package clienteserver;
+import clienteserver.Email;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public interface ServerEmailInterface extends Remote{
 

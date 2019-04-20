@@ -1,5 +1,5 @@
 package clienteserver;
-import clienteserver.*;
+import clienteserver.Email;
 
 import java.io.Console;
 import java.rmi.RemoteException;
@@ -31,6 +31,7 @@ public class Client {
         if(con != null){
             Scanner scanner = new Scanner(con.reader());
             resp = scanner.nextInt();
+            scanner.close();
         }
         return resp;
     }
@@ -42,6 +43,7 @@ public class Client {
         if(con != null){
             Scanner scanner = new Scanner(con.reader());
             resp = scanner.nextInt();
+            scanner.close();
         }
         if (resp == 1)
             return true;
@@ -61,6 +63,7 @@ public class Client {
         email.setSubject(scanner.nextLine());
         System.out.println("Corpo da Mensagem:\n");
         email.setBody(scanner.nextLine());
+        scanner.close();
         msi.send(email);
     }
     public void delete_email(Email email) throws RemoteException {
@@ -72,15 +75,16 @@ public class Client {
         ArrayList<Email> emails = msi.list(this.username);
         Console con = System.console();
         Scanner scanner = new Scanner(con.reader());
-        int resp;
         boolean exit = false, flag = true;
         for(int i = 0; i < emails.size(); ){
-            System.out.println("=================CAIXA DE ENTRADA================");
-            System.out.println("-------------------------------\n");
-            System.out.println("Remetente: " + emails.get(i).getSender());
-            System.out.println("Assunto: " + emails.get(i).getSubject());
-            System.out.println("-------------------------------\n");
-            System.out.println("0-ANTERIOR/ 1-PRÓXIMO/ 2-ABRIR / <outro> - SAIR\n");
+            if(flag){ //Não exibe a caixa de entrada novamente no casos que atinge o limite
+                System.out.println("=================CAIXA DE ENTRADA================");
+                System.out.println("-------------------------------\n");
+                System.out.println("Remetente: " + emails.get(i).getSender());
+                System.out.println("Assunto: " + emails.get(i).getSubject());
+                System.out.println("-------------------------------\n");
+                System.out.println("0-ANTERIOR/ 1-PRÓXIMO/ 2-ABRIR / <outro> - SAIR\n");
+            }
             switch(scanner.nextInt()){
                 case 0:
                     if(i == 0){
@@ -107,8 +111,10 @@ public class Client {
                     exit = true;
                     break;
             }
-            if(exit)
-                break;  
+            if(exit){
+                scanner.close();
+                break;
+            }
         }
     }
 
@@ -123,6 +129,7 @@ public class Client {
         System.out.println("----" + email.getSubject());
         System.out.println("----Corpo da Mensagem:\n");
         System.out.println("----" + email.getBody());
+        scanner.close();
 
     }
 
@@ -142,6 +149,7 @@ public class Client {
         answer.setRecipient(email.getSender());
         answer.setSubject(email.getSubject());
         answer.setBody(scanner.nextLine());
+        scanner.close();
         msi.send(answer);
     }
 
@@ -172,6 +180,7 @@ public class Client {
         default:
             break;
         }
+        scanner.close();
     }
 
     public static void main(String argv[]){

@@ -1,5 +1,5 @@
 package clienteserver;
-
+import clienteserver.Email;
 import java.rmi.*;
 import java.rmi.server.*;
 import java.util.ArrayList;
@@ -43,6 +43,9 @@ public class ServerEmail extends UnicastRemoteObject implements ServerEmailInter
 			FileWriter fileWriter = new FileWriter(arq, true);
 			PrintWriter printWriter = new PrintWriter(fileWriter);
 
+			//Set o id com a hora atual em millisegundos
+			email.setId(System.currentTimeMillis());
+
 			printWriter.println(email.getId());
 			printWriter.println(email.getSender());
 			printWriter.println(email.getRecipient());
@@ -84,7 +87,7 @@ public class ServerEmail extends UnicastRemoteObject implements ServerEmailInter
 
 				email = new Email();
 				if ((linha=bufferedReader.readLine()) != null)
-					email.setId(Double.parseDouble(linha));
+					email.setId(Long.parseLong(linha));
 				if ((linha=bufferedReader.readLine()) != null)
 					email.setSender(linha);
 				if ((linha=bufferedReader.readLine()) != null)
