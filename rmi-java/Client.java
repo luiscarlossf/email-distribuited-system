@@ -12,7 +12,7 @@ public class Client {
         this.username = username;
         System.out.println("Iniciando o CLiente ...");
         try {
-            Registry registry = LocateRegistry.getRegistry("http://localhost");
+            Registry registry = LocateRegistry.getRegistry("http://localhost:1099");
             msi = (ServerEmailInterface) registry.lookup("ServerEmail");
         } catch (Exception e) {
             System.out.println("Falhou a inicialização do Cliente.\n" + e);
