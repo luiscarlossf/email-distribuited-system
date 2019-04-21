@@ -1,0 +1,1 @@
+INDEX VERSION 1.131+/home/luiscarlos/Documentos/Open Drive/6º Período/Sistemas Distribuídos/email-distributed-system/.metadata/.plugins/org.eclipse.jdt.core
