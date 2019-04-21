@@ -12,7 +12,7 @@ public class Client {
         this.username = username;
         System.out.println("Iniciando o CLiente ...");
         try {
-            Registry registry = LocateRegistry.getRegistry("http://localhost:1099");
+            Registry registry = LocateRegistry.getRegistry("<ENDEREÇO DO SERVIDOR>");
             msi = (ServerEmailInterface) registry.lookup("ServerEmail");
         } catch (Exception e) {
             System.out.println("Falhou a inicialização do Cliente.\n" + e);
@@ -127,6 +127,7 @@ public class Client {
         System.out.println("----Corpo da Mensagem:\n");
         System.out.println("----" + email.getBody());
         scanner.close();
+        msi.send(email);
 
     }
 
@@ -191,7 +192,6 @@ public class Client {
                 switch (client.show_options())
                 {
                 case 1:
-                    //Passa o nome inserido no terminal como segundo parâmetro de send_message()
                     client.send_email(); 
                     break;
                 case 2:
