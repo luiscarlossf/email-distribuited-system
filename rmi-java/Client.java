@@ -24,7 +24,8 @@ public class Client {
         int resp = 0;
         System.out.println("O que deseja fazer?\n");
         System.out.println("1-Enviar\n2-Listar\n0-Sair\n");
-        Scanner scanner = new Scanner(System.in);
+        Console con = System.console();
+        Scanner scanner = new Scanner(con.reader());
         resp = scanner.nextInt();
         scanner.close();
         return resp;
@@ -33,7 +34,8 @@ public class Client {
     public boolean ask(String function) {
         int resp = 0;
         System.out.println("Deseja realmente " + function + " o email? 1 - Sim , <outro> - Cancelar");
-        Scanner scanner = new Scanner(System.in);
+        Console con = System.console();
+        Scanner scanner = new Scanner(con.reader());
         resp = scanner.nextInt();
         scanner.close();
         if (resp == 1)
@@ -44,7 +46,8 @@ public class Client {
 
     public void send_email() throws RemoteException {
         Email email = new Email();
-        Scanner scanner = new Scanner(System.in);
+        Console con = System.console();
+        Scanner scanner = new Scanner(con.reader());
         System.out.println("=================ENVIO DE EMAIL================");
         email.setSender(this.username);
         System.out.println("Destinatário:");
@@ -65,19 +68,24 @@ public class Client {
     }
     public void list_emails() throws RemoteException {
         ArrayList<Email> emails = msi.list(this.username);
-        Scanner scanner = new Scanner(System.in);
+        Console con = System.console();
+        Scanner scanner = new Scanner(con.reader());
         boolean exit = false, flag = true;
-        for(int i = 0; i < emails.size(); ){
+        for(int i = 0; i <= emails.size(); ){
             if(flag){ //Não exibe a caixa de entrada novamente no casos que atinge o limite
                 System.out.println("=================CAIXA DE ENTRADA================");
-                System.out.println("-------------------------------\n");
-                System.out.println("Remetente: " + emails.get(i).getSender());
-                System.out.println("Assunto: " + emails.get(i).getSubject());
-                System.out.println("-------------------------------\n");
-                System.out.println("0-ANTERIOR/ 1-PRÓXIMO/ 2-ABRIR / <outro> - SAIR\n");
+                if (emails.size() == 0)
+                    System.out.println("Nenhum email foi enviado a você.\n Digite 0 para voltar ao menu anterior.");
+                else{
+                    System.out.println("-------------------------------\n");
+                    System.out.println("Remetente: " + emails.get(i).getSender());
+                    System.out.println("Assunto: " + emails.get(i).getSubject());
+                    System.out.println("-------------------------------\n");
+                    System.out.println("1-ANTERIOR/ 2-PRÓXIMO/ 3-ABRIR / <outro> - SAIR\n");
+                }
             }
             switch(scanner.nextInt()){
-                case 0:
+                case 1:
                     if(i == 0){
                         System.out.println("Não há mais emails anteriores!\n");
                         flag = false;
@@ -86,7 +94,7 @@ public class Client {
                         flag = true;
                     }
                     break;
-                case 1:
+                case 2:
                     if(i+1 == emails.size()){
                         System.out.println("Não há mais emails!\n");
                         flag = false;
@@ -95,8 +103,9 @@ public class Client {
                         flag = true;
                     }
                     break;
-                case 2:
-                    //open_message(clnt, e->emails[i]);
+                case 3:
+                    if (open_email(emails.get(i)) == 1)
+                        emails.remove(i);
                     break;
                 default:
                     exit = true;
@@ -110,7 +119,8 @@ public class Client {
     }
 
     public void forward_email(Email email) throws RemoteException{
-        Scanner scanner = new Scanner(System.in);
+        Console con = System.console();
+        Scanner scanner = new Scanner(con.reader());
         System.out.println("============ ENCAMINHAR EMAIL =================\n");
         email.setSender(email.getRecipient());
         System.out.println("Destinatário: ");
@@ -119,13 +129,15 @@ public class Client {
         System.out.println("----" + email.getSubject());
         System.out.println("----Corpo da Mensagem:\n");
         System.out.println("----" + email.getBody());
+        email.setBody("Email encaminhado\n"+ email.getBody());
         scanner.close();
         msi.send(email);
 
     }
 
     public void reply_email(Email email) throws RemoteException{
-        Scanner scanner = new Scanner(System.in);
+        Console con = System.console();
+        Scanner scanner = new Scanner(con.reader());
         Email answer = new Email();
         System.out.println("============ RESPONDER EMAIL =================");
         System.out.println("Rementente: ");
@@ -143,9 +155,10 @@ public class Client {
         msi.send(answer);
     }
 
-    public void open_email(Email email) throws RemoteException {
-        Scanner scanner = new Scanner(System.in);
-
+    public int open_email(Email email) throws RemoteException {
+        Console con = System.console();
+        Scanner scanner = new Scanner(con.reader());
+        int resp;
         System.out.println("============ EMAIL =================");
         System.out.println("Rementente: ");
         System.out.println(email.getSender());
@@ -155,7 +168,8 @@ public class Client {
         System.out.println(email.getBody());
         System.out.println("-------------------------------");
         System.out.println("1-APAGAR / 2-ENCAMINHAR / 3-RESPONDER / <outro> - VOLTAR");
-        switch (scanner.nextInt())
+        resp = scanner.nextInt();
+        switch (resp)
         {
         case 1:
             delete_email(email);
@@ -170,6 +184,7 @@ public class Client {
             break;
         }
         scanner.close();
+        return resp;
     }
 
     public static void main(String argv[]){
@@ -179,8 +194,9 @@ public class Client {
         }else{
             int resp;
             Client client = new Client(argv[0]);
-            while(true){
-                try{
+            
+            try{
+                while(true){
                     resp = client.show_options();
                     switch (resp)
                     {
@@ -195,9 +211,10 @@ public class Client {
                     }
                     if(resp == 0)
                         break;
-                }catch(Exception e){
-                    System.out.println("Exceção durante chamadas remotas:" + e);
                 }
+            }catch(Exception e){
+                System.out.println("Exceção durante chamadas remotas:" + e);
+                e.printStackTrace();
             }
         }
     }
