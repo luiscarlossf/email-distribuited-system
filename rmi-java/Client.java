@@ -54,6 +54,8 @@ public class Client {
         System.out.println("Corpo da Mensagem:\n");
         email.setBody(scanner.nextLine());
         scanner.close();
+        //Set o id com a hora atual em millisegundos
+		email.setId(System.currentTimeMillis());
         msi.send(email);
     }
     public void delete_email(Email email) throws RemoteException {

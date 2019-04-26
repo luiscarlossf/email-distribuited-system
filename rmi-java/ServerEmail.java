@@ -42,8 +42,6 @@ public class ServerEmail extends UnicastRemoteObject implements ServerEmailInter
 			FileWriter fileWriter = new FileWriter(arq, true);
 			PrintWriter printWriter = new PrintWriter(fileWriter);
 
-			//Set o id com a hora atual em millisegundos
-			email.setId(System.currentTimeMillis());
 
 			printWriter.println(email.getId());
 			printWriter.println(email.getSender());
