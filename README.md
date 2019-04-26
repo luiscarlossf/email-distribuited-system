@@ -12,15 +12,20 @@ All this on aclient-server architecture.
 ## Execution
 ### RPC
 - Server
-'./email_server'
+
+`./email_server`
 - Client
-'./email_client <host> <username>'
+
+`./email_client <host> <username>`
 
 
 ### RMI JAVA
 - Server
-'rmiregistry'
-'java StartServer'
+
+`rmiregistry`
+
+`java StartServer`
 
 - Client
-'./email_server <username>'
+
+`./email_server <username>`
