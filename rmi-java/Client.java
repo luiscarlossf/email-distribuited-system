@@ -12,7 +12,7 @@ public class Client {
         this.username = username;
         System.out.println("Iniciando o CLiente ...");
         try {
-            Registry registry = LocateRegistry.getRegistry("<ENDEREÇO DO SERVIDOR>");
+            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             msi = (ServerEmailInterface) registry.lookup("ServerEmail");
         } catch (Exception e) {
             System.out.println("Falhou a inicialização do Cliente.\n" + e);
@@ -24,24 +24,18 @@ public class Client {
         int resp = 0;
         System.out.println("O que deseja fazer?\n");
         System.out.println("1-Enviar\n2-Listar\n0-Sair\n");
-        Console con = System.console();
-        if(con != null){
-            Scanner scanner = new Scanner(con.reader());
-            resp = scanner.nextInt();
-            scanner.close();
-        }
+        Scanner scanner = new Scanner(System.in);
+        resp = scanner.nextInt();
+        scanner.close();
         return resp;
     }
 
     public boolean ask(String function) {
         int resp = 0;
         System.out.println("Deseja realmente " + function + " o email? 1 - Sim , <outro> - Cancelar");
-        Console con = System.console();
-        if(con != null){
-            Scanner scanner = new Scanner(con.reader());
-            resp = scanner.nextInt();
-            scanner.close();
-        }
+        Scanner scanner = new Scanner(System.in);
+        resp = scanner.nextInt();
+        scanner.close();
         if (resp == 1)
             return true;
         else
@@ -50,8 +44,7 @@ public class Client {
 
     public void send_email() throws RemoteException {
         Email email = new Email();
-        Console con = System.console();
-        Scanner scanner = new Scanner(con.reader());
+        Scanner scanner = new Scanner(System.in);
         System.out.println("=================ENVIO DE EMAIL================");
         email.setSender(this.username);
         System.out.println("Destinatário:");
@@ -70,8 +63,7 @@ public class Client {
     }
     public void list_emails() throws RemoteException {
         ArrayList<Email> emails = msi.list(this.username);
-        Console con = System.console();
-        Scanner scanner = new Scanner(con.reader());
+        Scanner scanner = new Scanner(System.in);
         boolean exit = false, flag = true;
         for(int i = 0; i < emails.size(); ){
             if(flag){ //Não exibe a caixa de entrada novamente no casos que atinge o limite
@@ -115,9 +107,8 @@ public class Client {
         }
     }
 
-    public void forward_email(Email email){
-        Console con = System.console();
-        Scanner scanner = new Scanner(con.reader());
+    public void forward_email(Email email) throws RemoteException{
+        Scanner scanner = new Scanner(System.in);
         System.out.println("============ ENCAMINHAR EMAIL =================\n");
         email.setSender(email.getRecipient());
         System.out.println("Destinatário: ");
@@ -132,8 +123,7 @@ public class Client {
     }
 
     public void reply_email(Email email) throws RemoteException{
-        Console con = System.console();
-        Scanner scanner = new Scanner(con.reader());
+        Scanner scanner = new Scanner(System.in);
         Email answer = new Email();
         System.out.println("============ RESPONDER EMAIL =================");
         System.out.println("Rementente: ");
@@ -152,8 +142,7 @@ public class Client {
     }
 
     public void open_email(Email email) throws RemoteException {
-        Console con = System.console();
-        Scanner scanner = new Scanner(con.reader());
+        Scanner scanner = new Scanner(System.in);
 
         System.out.println("============ EMAIL =================");
         System.out.println("Rementente: ");
