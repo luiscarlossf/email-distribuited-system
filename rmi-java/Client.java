@@ -178,8 +178,8 @@ public class Client {
             System.exit(1);
         }else{
             int resp;
+            Client client = new Client(argv[0]);
             while(true){
-                Client client = new Client(argv[0]); 
                 try{
                     resp = client.show_options();
                     switch (resp)
