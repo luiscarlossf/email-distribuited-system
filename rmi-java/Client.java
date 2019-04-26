@@ -175,22 +175,27 @@ public class Client {
             System.out.println("Você precisa passar o nome do usuário. Java Client nome_usuario");
             System.exit(1);
         }else{
-            Client client = new Client(argv[0]);
-        
-            try{
-                switch (client.show_options())
-                {
-                case 1:
-                    client.send_email(); 
-                    break;
-                case 2:
-                    client.list_emails();
-                    break;
-                default:
-                    break;
+            int resp;
+            while(true){
+                Client client = new Client(argv[0]); 
+                try{
+                    resp = client.show_options();
+                    switch (resp)
+                    {
+                    case 1:
+                        client.send_email(); 
+                        break;
+                    case 2:
+                        client.list_emails();
+                        break;
+                    default:
+                        break;
+                    }
+                    if(resp == 0)
+                        break;
+                }catch(Exception e){
+                    System.out.println("Exceção durante chamadas remotas:" + e);
                 }
-            }catch(Exception e){
-                System.out.println("Exceção durante chamadas remotas:" + e);
             }
         }
     }
